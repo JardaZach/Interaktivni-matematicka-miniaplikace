@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="cs">
+<head>
+  <meta charset="UTF-8">
+  <title>Interaktivní matematika</title>
+  <style>
+    body { font-family: Arial; max-width: 600px; margin: 40px auto; }
+    input, button { padding: 8px; margin: 5px 0; width: 100%; }
+    .section { margin-bottom: 30px; padding: 15px; border: 1px solid #ccc; border-radius: 8px; }
+    h2 { margin-top: 0; }
+  </style>
+</head>
+<body>
+
+  <h1>Interaktivní matematický program</h1>
+
+  <!-- Součet -->
+  <div class="section">
+    <h2>Součet čísel</h2>
+    <input id="sumInput" placeholder="Zadej čísla oddělená čárkou (např. 1,2,3)">
+    <button onclick="calcSum()">Spočítat součet</button>
+    <div id="sumResult"></div>
+  </div>
+
+  <!-- Faktoriál -->
+  <div class="section">
+    <h2>Faktoriál n!</h2>
+    <input id="factInput" type="number" placeholder="Zadej n">
+    <button onclick="calcFactorial()">Spočítat faktoriál</button>
+    <div id="factResult"></div>
+  </div>
+
+  <!-- Fibonacci -->
+  <div class="section">
+    <h2>Fibonacciho číslo</h2>
+    <input id="fibInput" type="number" placeholder="Zadej n">
+    <button onclick="calcFib()">Spočítat Fibonacci(n)</button>
+    <div id="fibResult"></div>
+  </div>
+
+  <!-- Kvadratická rovnice -->
+  <div class="section">
+    <h2>Řešení kvadratické rovnice</h2>
+    <input id="a" type="number" placeholder="a">
+    <input id="b" type="number" placeholder="b">
+    <input id="c" type="number" placeholder="c">
+    <button onclick="solveQuadratic()">Vyřešit rovnici</button>
+    <div id="quadResult"></div>
+  </div>
+
+<script>
+  function calcSum() {
+    const nums = document.getElementById("sumInput").value
+      .split(",")
+      .map(n => parseFloat(n.trim()))
+      .filter(n => !isNaN(n));
+
+    const sum = nums.reduce((a, b) => a + b, 0);
+    document.getElementById("sumResult").innerText = "Součet: " + sum;
+  }
+
+  function calcFactorial() {
+    const n = parseInt(document.getElementById("factInput").value);
+    if (n < 0) return document.getElementById("factResult").innerText = "Faktoriál není definován pro záporná čísla";
+
+    let result = 1;
+    for (let i = 1; i <= n; i++) result *= i;
+
+    document.getElementById("factResult").innerText = n + "! = " + result;
+  }
+
+  function calcFib() {
+    const n = parseInt(document.getElementById("fibInput").value);
+    if (n < 0) return document.getElementById("fibResult").innerText = "Fibonacci není definován pro záporná čísla";
+
+    let a = 0, b = 1;
+    for (let i = 2; i <= n; i++) {
+      const next = a + b;
+      a = b;
+      b = next;
+    }
+    document.getElementById("fibResult").innerText = "Fibonacci(" + n + ") = " + (n === 0 ? 0 : b);
+  }
+
+  function solveQuadratic() {
+    const a = parseFloat(document.getElementById("a").value);
+    const b = parseFloat(document.getElementById("b").value);
+    const c = parseFloat(document.getElementById("c").value);
+
+    if (a === 0) {
+      document.getElementById("quadResult").innerText = "a nesmí být 0";
+      return;
+    }
+
+    const D = b*b - 4*a*c;
+
+    if (D > 0) {
+      const x1 = (-b + Math.sqrt(D)) / (2*a);
+      const x2 = (-b - Math.sqrt(D)) / (2*a);
+      document.getElementById("quadResult").innerText =
+        "Dva reálné kořeny: x₁ = " + x1 + ", x₂ = " + x2;
+    } else if (D === 0) {
+      const x = -b / (2*a);
+      document.getElementById("quadResult").innerText =
+        "Jeden reálný kořen: x = " + x;
+    } else {
+      const real = -b / (2*a);
+      const imag = Math.sqrt(-D) / (2*a);
+      document.getElementById("quadResult").innerText =
+        "Komplexní kořeny: " +
+        real + " ± " + imag + "i";
+    }
+  }
+</script>
+
+</body>
+</html>
